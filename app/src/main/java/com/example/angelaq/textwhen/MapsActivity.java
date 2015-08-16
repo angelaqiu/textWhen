@@ -30,6 +30,7 @@ public class MapsActivity extends FragmentActivity implements
     public static final String TAG = MapsActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
+    private boolean mRequestingLocationUpdates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,19 @@ public class MapsActivity extends FragmentActivity implements
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
     }
 
+    protected void createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
         mGoogleApiClient.connect();
+        mRequestingLocationUpdates = true;
     }
 
     @Override
@@ -62,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
+        mRequestingLocationUpdates = false;
     }
 
     /**
@@ -112,6 +122,15 @@ public class MapsActivity extends FragmentActivity implements
         else {
             handleNewLocation(location);
         }
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
 
     private void handleNewLocation(Location location) {
@@ -127,6 +146,14 @@ public class MapsActivity extends FragmentActivity implements
                 .title("I am here!");
         mMap.addMarker(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        calculateTime();
+    }
+
+    public void calculateTime() {
+        double destLat = 37.394079;
+        double destLong = -122.069652;
+
+
     }
 
     @Override

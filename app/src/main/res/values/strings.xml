@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">TextWhen</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_form">form</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_gps">GPSActivity</string>
 </resources>
