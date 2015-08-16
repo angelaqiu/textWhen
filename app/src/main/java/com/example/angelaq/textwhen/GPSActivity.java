@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,9 @@ import java.net.URLEncoder;
 public class GPSActivity extends Activity {
 
     LocationManager locationManager;
+    String destination;
+    String when;
+    String number;
 
     TextView txt;
 
@@ -77,6 +83,56 @@ public class GPSActivity extends Activity {
         setContentView(R.layout.activity_gps);
 
         txt = (TextView)findViewById(R.id.gps);
+        final EditText mEdit = (EditText)findViewById(R.id.editText2);
+
+        Button go = (Button)findViewById(R.id.ButtonSendFeedback);
+
+        mEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                Log.v(GPSActivity.class.getName(), "??????");
+                if (!hasFocus) {
+                    destination = mEdit.getText().toString();
+                    Log.v(GPSActivity.class.getName(), "destination saved");
+                }
+            }
+        });
+
+        final EditText mEdit2 = (EditText)findViewById(R.id.editText);
+
+        mEdit2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                if (!hasFocus) {
+                    when = mEdit2.getText().toString();
+                    Log.v(GPSActivity.class.getName(), "when saved");
+                }
+            }
+        });
+
+        final EditText mEdit3 = (EditText)findViewById(R.id.editText3);
+
+        mEdit3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                if (!hasFocus) {
+                    number = mEdit3.getText().toString();
+                    Log.v(GPSActivity.class.getName(), "number saved");
+                }
+            }
+        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);

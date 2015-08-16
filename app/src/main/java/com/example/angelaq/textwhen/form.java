@@ -11,13 +11,13 @@ import android.widget.Button;
 
 public class form extends Activity {
 
-    Button but;
+//    Button but;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
-        but = (Button)findViewById(R.id.button);
+//        but = (Button)findViewById(R.id.button);
     }
 
     public void clicked(View v) {
