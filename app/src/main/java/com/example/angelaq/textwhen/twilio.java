@@ -23,8 +23,8 @@ public class twilio extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twilio);
-        public static final String ACCOUNT_SID = "ACec6d1838f4fe2d03577864cf34c57d1d";
-        public static final String AUTH_TOKEN = "381cfba4e231f640bdf7348bbb796bba";
+        final String ACCOUNT_SID = "ACec6d1838f4fe2d03577864cf34c57d1d";
+        final String AUTH_TOKEN = "381cfba4e231f640bdf7348bbb796bba";
 
 //        public static void main(String[]args) throws TwilioRestException {
         TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
@@ -34,7 +34,12 @@ public class twilio extends AppCompatActivity {
         params.add(new BasicNameValuePair("To","+19712387774"));
         params.add(new BasicNameValuePair("From","+19712051833"));
         params.add(new BasicNameValuePair("Body","Be there in 5!"));
-        Message message = messageFactory.create(params);
+        Message message = null;
+        try {
+            message = messageFactory.create(params);
+        } catch (TwilioRestException e) {
+            e.printStackTrace();
+        }
         System.out.println(message.getSid());
 //        }
     }
