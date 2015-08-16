@@ -3,6 +3,7 @@ package com.example.angelaq.textwhen;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -43,17 +44,17 @@ import java.net.URLEncoder;
 public class GPSActivity extends Activity {
 
     LocationManager locationManager;
-    String destination;
-    String when;
-    String number;
 
     TextView txt;
+    Double lat;
+    Double lon;
+
 
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Double lat = location.getLatitude();
-            Double lon = location.getLongitude();
+            lat = location.getLatitude();
+            lon = location.getLongitude();
             Log.v(GPSActivity.class.getName(), "lat: " + lat + "long: " + lon);
             Toast.makeText(GPSActivity.this, lat.toString(), Toast.LENGTH_SHORT).show();
             checkDistance(location);
@@ -83,67 +84,24 @@ public class GPSActivity extends Activity {
         setContentView(R.layout.activity_gps);
 
         txt = (TextView)findViewById(R.id.gps);
-        final EditText mEdit = (EditText)findViewById(R.id.editText2);
 
-        Button go = (Button)findViewById(R.id.ButtonSendFeedback);
 
-        mEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
-                Log.v(GPSActivity.class.getName(), "??????");
-                if (!hasFocus) {
-                    destination = mEdit.getText().toString();
-                    Log.v(GPSActivity.class.getName(), "destination saved");
-                }
-            }
-        });
-
-        final EditText mEdit2 = (EditText)findViewById(R.id.editText);
-
-        mEdit2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
-                if (!hasFocus) {
-                    when = mEdit2.getText().toString();
-                    Log.v(GPSActivity.class.getName(), "when saved");
-                }
-            }
-        });
-
-        final EditText mEdit3 = (EditText)findViewById(R.id.editText3);
-
-        mEdit3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
-                if (!hasFocus) {
-                    number = mEdit3.getText().toString();
-                    Log.v(GPSActivity.class.getName(), "number saved");
-                }
-            }
-        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
     }
+
+
 
     public void checkDistance(Location loc) {
         final TextView mTxtDisplay;
         mTxtDisplay = (TextView) findViewById(R.id.gps);
         Log.v(GPSActivity.class.getName(), "checking distance");
 
-        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=Vancouver+BC|Seattle&destinations=San+Francisco|Victoria+BC&mode=bicycling&language=fr-FR";
+        Log.v("sdf", "dest:jhhhhhh " + form.destination);
+
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + lat.toString()
+                + "," + lon.toString() + "&destinations=" + form.destination;
 
 // Request a string response
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -176,6 +134,8 @@ public class GPSActivity extends Activity {
                             String dest = response.getString("destination_addresses"),
                                     orig = response.getString("origin_addresses");
                             Log.v(GPSActivity.class.getName(), "dest: "+dest+"\norig: "+orig);
+                            Log.v(GPSActivity.class.getName(), response.getJSONArray("rows").getJSONArray(0).getJSONObject(0).getString("text"));
+                            mTxtDisplay.setText((CharSequence) response.getJSONArray("rows").getJSONArray(0).getJSONObject(0).getString("text"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
