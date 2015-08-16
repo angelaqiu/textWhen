@@ -134,6 +134,7 @@ public class GPSActivity extends Activity {
                             String dest = response.getString("destination_addresses"),
                                     orig = response.getString("origin_addresses");
                             Log.v(GPSActivity.class.getName(), "dest: "+dest+"\norig: "+orig);
+                            Log.v(GPSActivity.class.getName(), "rowsssss: " + response.getJSONArray(("rows")).toString());
                             Log.v(GPSActivity.class.getName(), response.getJSONArray("rows").getJSONArray(0).getJSONObject(0).getString("text"));
                             mTxtDisplay.setText((CharSequence) response.getJSONArray("rows").getJSONArray(0).getJSONObject(0).getString("text"));
                         } catch (JSONException e) {

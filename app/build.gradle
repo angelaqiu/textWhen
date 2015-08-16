@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:7.8.0'
     compile project(':volley')
+    compile files('libs/gson-2.3.1.jar')
 }
